@@ -1,6 +1,19 @@
 const express = require('express');
 const router = express.Router();
 const Ninja = require('./../models/ninja');
+const path = require("path");
+
+
+router.get('/', function(req, res, next) {
+	res.sendFile("index.html", {root: "./public/"})
+});
+
+router.get('/find/all', function(req, res, next) {
+	Ninja.find({}).then(function(results) {
+		res.sendFile("find.html?res="+results, {root: "./public/"})
+	});
+
+});
 
 //get a list of ninjas from db
 router.get('/ninjas', function(req, res, next) {
@@ -8,16 +21,20 @@ router.get('/ninjas', function(req, res, next) {
 	// 	res.send(ninjas);
 	// })
 
-	Ninja.aggregate(
-		[
-			{ $geoNear: 
-				{ 
-					near: {type: 'Point', coordinates: [parseFloat(req.query.lng), parseFloat(req.query.lat)]}, 
-					spherical: true, maxDistance: 30000, distanceField: "dist.calculated" 
-				} 
-			}
-		]
-	).then(function(results){ res.send(results); });
+	if(req.query.lng != null) {
+		Ninja.aggregate(
+			[
+				{ $geoNear: 
+					{ 
+						near: {type: 'Point', coordinates: [parseFloat(req.query.lng), parseFloat(req.query.lat)]}, 
+						spherical: true, maxDistance: 30000, distanceField: "dist.calculated" 
+					} 
+				}
+			]
+		).then(function(results){ res.send(results); });
+	} else if(req.query.name != null) {
+		Ninja.find({}).then(function(results) { res.send(results); });
+	}
 
 	// Ninja.geoNear(
 	// 		{type: 'Point', coordinates: [parseFloat(req.query.lng), parseFloat(req.query.lat)]},
