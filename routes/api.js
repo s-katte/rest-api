@@ -4,13 +4,23 @@ const Ninja = require('./../models/ninja');
 const path = require("path");
 
 
+router.get('/', function(req, res, next) {
+	res.render('home');
+});
+
+// router.get('/find/ninjas', function(req, res, next) {
+// 	res.render('find')
+// });
+
 //get a list of ninjas from db
-router.get('/ninjas', function(req, res, next) {
+router.get('/find/ninjas', function(req, res, next) {
 	// Ninja.find({}).then(function(ninjas) {
 	// 	res.send(ninjas);
 	// })
 
 	if(req.query.lng != null) {
+
+		
 		Ninja.aggregate(
 			[
 				{ $geoNear: 
@@ -20,9 +30,10 @@ router.get('/ninjas', function(req, res, next) {
 					} 
 				}
 			]
-		).then(function(results){ res.send(results); });
-	} else if(req.query.name != null) {
-		Ninja.find({}).then(function(results) { res.send(results); });
+		).then(function(results){ res.render('find',{data: {ninja: results}}); 
+});
+	} else {
+		res.render('find');
 	}
 
 	// Ninja.geoNear(
@@ -33,11 +44,15 @@ router.get('/ninjas', function(req, res, next) {
 	// 	});
 });
 
+router.get("/add", function(req, res, next) {
+	res.render("add");
+});
+
 // add a new ninja to db
-router.post('/ninjas', function(req, res, next) {
+router.post('/add', function(req, res, next) {
 	// var ninja = new Ninja(req.body);
 	// ninja.save();	//save to db
-
+	console.log(req);
 //save to db another method
 	Ninja.create(req.body).then(function(ninja) {
 		res.send(ninja);

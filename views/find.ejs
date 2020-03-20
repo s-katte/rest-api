@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Find</title>
+	<link rel="stylesheet" href="">
+</head>
+<body>
+
+	<form action="/find/ninjas">
+		<input type="text" placeholder="lat" name="lat" >
+		<input type="text" placeholder="lng" name="lng">
+		<input type="submit">
+	</form>
+
+
+	<ul>
+		<% if (typeof data != "undefined") {%>
+
+			<!-- <p><%= JSON.stringify(data)%></p> -->
+			<% data.ninja.forEach((item) => {%>
+				<li><%=item.name%></li>
+			<%});%>
+		<%}%>
+	</ul>
+</body>
+</html>
