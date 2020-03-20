@@ -4,17 +4,6 @@ const Ninja = require('./../models/ninja');
 const path = require("path");
 
 
-router.get('/', function(req, res, next) {
-	res.sendFile("index.html", {root: "./public/"})
-});
-
-router.get('/find/all', function(req, res, next) {
-	Ninja.find({}).then(function(results) {
-		res.sendFile("find.html?res="+results, {root: "./public/"})
-	});
-
-});
-
 //get a list of ninjas from db
 router.get('/ninjas', function(req, res, next) {
 	// Ninja.find({}).then(function(ninjas) {
