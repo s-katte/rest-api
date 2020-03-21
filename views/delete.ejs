@@ -10,14 +10,14 @@
 
 	<h1>Click on any name to delete</h1>
 	<% data.ninjas.forEach((item) => {%>
-		<li onclick="deleteThis('<%=item.name %>', '<%=item._id%>')"><%=item.name%></li>
+		<li onclick="deleteThis('<%=item.name %>', '<%=item._id%>', `<%=item%>`)"><%=item.name%></li>
 	<%});%>
 
 </body>
 
 <script>
-	function deleteThis(name, id) {
-		var confirmation = confirm("Do you want to delete " +name);
+	function deleteThis(name, id, ninja) {
+		var confirmation = confirm("Do you want to delete " +ninja);
 		if (confirmation) {
 			var xhttp = new XMLHttpRequest();
 			xhttp.open("DELETE", "/delete/"+id, true);	

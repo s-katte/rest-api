@@ -1,14 +1,44 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>NinjaGo</title>
-	<link rel="stylesheet" href="">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>NinjaGo</title>
+    <link rel="stylesheet" href="">
 </head>
+
 <body>
-	<a href="/find/ninjas">Find</a>
-	<a href="/add">Add</a>
-	<a href="/delete">Delete</a>
+    <a href="/find/ninjas">Find</a>
+    <a href="/add">Add</a>
+    <a href="/delete">Delete</a>
+    <a href="/update">Update</a>
+    <ul>
+        <% data.ninjas.forEach((item) => {%>
+        <li onclick="updateThis('<%=item.name %>', '<%=item._id%>', '<%=item.rank%>', '<%=item.available%>', '<%=item.geometry.coordinates[0]%>', '<%=item.geometry.coordinates[1]%>')">
+            <%=item.name%>
+        </li>
+        <%});%>
+    </ul>
 </body>
+<script>
+	function updateThis(name, id, rank, available, lat, lng) {
+
+		var headerData = {
+			name: name,
+			rank: rank,
+			available: available,
+			lat: lat,
+			lng: lng
+		}
+
+		var xhttp = new XMLHttpRequest();
+		xhttp.open("GET", "/updateOne", true);
+		// xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+		xhttp.setRequestHeader("Content-type", " application/json");
+		alert(JSON.stringify(headerData));
+		xhttp.send(JSON.stringify(headerData));
+	}
+</script>
+
 </html>

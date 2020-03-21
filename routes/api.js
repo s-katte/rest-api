@@ -5,7 +5,9 @@ const path = require("path");
 
 
 router.get('/', function(req, res, next) {
-	res.render('home');
+	Ninja.find({}).then(function(results) {
+		res.render('home',{data: {ninjas: results}});
+	});
 });
 
 // router.get('/find/ninjas', function(req, res, next) {
@@ -59,8 +61,21 @@ router.post('/add', function(req, res, next) {
 	}).catch(next);
 });
 
+router.get('/update', function(req, res, next) {
+
+	Ninja.find({}).then(function(results) {
+		res.render('update',{data: {ninjas: results}});
+	});
+
+});
+
+router.get('/updateOne', function(req, res, next) {
+	// alert(res.render('updateOne'))
+	res.render('updateOne');
+});
+
 //update a ninja in db
-router.put('/ninjas/:id', function(req, res, next) {
+router.put('/update/:id', function(req, res, next) {
 	Ninja.findByIdAndUpdate({_id: req.params.id}, req.body).then(function() {
 		Ninja.findOne({_id: req.params.id}).then(function(ninja){
 			res.send(ninja);
@@ -81,9 +96,7 @@ router.get('/delete', function(req, res, next) {
 router.delete('/delete/:id', function(req, res, next) {
 	console.log(req);
 	Ninja.findByIdAndRemove({_id: req.params.id}).then(function(ninja) {
-		Ninja.find({}).then(function(results) {
-			res.render('delete',{data: {ninjas: results}});
-		});
+		res.send(ninja);
 	});
 		
 });
