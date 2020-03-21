@@ -8,13 +8,43 @@
 </head>
 <body>
 	<form action="/add" method="POST">
-		<input type="text" name="name" placeholder="name">
-		<input type="text" name="rank" placeholder="rank">
+		<input type="text" name="name" id="name" placeholder="name">
+		<input type="text" name="rank" id="rank" placeholder="rank">
 		<input type="radio" name="availability" value="true">yes
 		<input type="radio" name="availability" value="false">No
-		<input type="text" name="lat" placeholder="lat">
-		<input type="text" name="lng" placeholder="lng">
-		<input type="submit">
+		<input type="text" name="lat" id="lat" placeholder="lat">
+		<input type="text" name="lng" id="lng" placeholder="lng">
+		<input type="button" onclick="sendRequest()">
 	</form>
 </body>
 </html>
+
+<script>
+	function sendRequest() {
+
+		var radios = document.getElementsByName("availability");
+
+		for (i = 0; i < radios.length; i++) {
+			if (radios[i].checked) {
+				var avail = radios[i].value;
+			}
+		}
+
+		var headerData = {
+			name: document.getElementById("name").value,
+			rank: document.getElementById("rank").value,
+			available : avail,
+			geometry: {coordinates: [document.getElementById("lat").value,
+									 document.getElementById("lng").value]}
+		};
+		window.alert(JSON.stringify(headerData));
+		console.log(headerData);
+		// var name = document.getElementsByName('name').value();
+		var xhttp = new XMLHttpRequest();
+		xhttp.open("POST", "/add", true);	
+		// xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+		xhttp.setRequestHeader("Content-type", " application/json");
+		console.log(headerData);
+		xhttp.send(JSON.stringify(headerData));
+	}
+</script>

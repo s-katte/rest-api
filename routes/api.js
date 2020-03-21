@@ -52,7 +52,7 @@ router.get("/add", function(req, res, next) {
 router.post('/add', function(req, res, next) {
 	// var ninja = new Ninja(req.body);
 	// ninja.save();	//save to db
-	console.log(req);
+	console.log(req.body);
 //save to db another method
 	Ninja.create(req.body).then(function(ninja) {
 		res.send(ninja);
@@ -67,6 +67,10 @@ router.put('/ninjas/:id', function(req, res, next) {
 		});
 	});
 	// res.send({type: 'PUT'});
+});
+
+router.get('/delete', function(req, res, next) {
+	res.render('delete');
 });
 
 //delete a ninja form db
