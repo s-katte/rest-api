@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Delete</title>
+	<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+	<h1>Click on any name to delete</h1>
+	<% data.ninjas.forEach((item) => {%>
+		<li onclick="deleteThis('<%=item.name %>', '<%=item._id%>')"><%=item.name%></li>
+	<%});%>
+
+</body>
+
+<script>
+	function deleteThis(name, id) {
+		var confirmation = confirm("Do you want to delete " +name);
+		if (confirmation) {
+			var xhttp = new XMLHttpRequest();
+			xhttp.open("DELETE", "/delete/"+id, true);	
+			// xhttp.setRequestHeader("Content-type", " application/json");
+
+			xhttp.send("");
+			location.reload();
+		}
+	}
+</script>
+</html>

@@ -70,15 +70,22 @@ router.put('/ninjas/:id', function(req, res, next) {
 });
 
 router.get('/delete', function(req, res, next) {
-	res.render('delete');
+
+	Ninja.find({}).then(function(results) {
+		res.render('delete',{data: {ninjas: results}});
+	});
+
 });
 
 //delete a ninja form db
-router.delete('/ninjas/:id', function(req, res, next) {
+router.delete('/delete/:id', function(req, res, next) {
+	console.log(req);
 	Ninja.findByIdAndRemove({_id: req.params.id}).then(function(ninja) {
-		res.send(ninja);
+		Ninja.find({}).then(function(results) {
+			res.render('delete',{data: {ninjas: results}});
+		});
 	});
-	res.send({type: 'DELETE'});
+		
 });
 
 module.exports = router;
